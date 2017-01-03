@@ -51,7 +51,7 @@ export class CesiumComponent implements OnInit {
       if (error) {
         console.error('elasticsearch cluster is down!');
       } else {
-        console.log(viewer)
+
         response.hits.hits.forEach((hit) => {
           marker(hit, viewer, pinbuilder);
         })
@@ -59,23 +59,26 @@ export class CesiumComponent implements OnInit {
 
       }
     });
-
-
-
+    console.log(this.cesiumViewer.entities)
+    console.log(viewer.entities)
   }
   newMarkerOnMap(hit, viewer, pinBuilder) {
 
     var markerHeight = Math.max(Math.min(hit._source.properties.Exp_TIV / 200000, 100), 20);
+    var pointOfInterest = Cesium.Cartographic.fromDegrees(
+      hit._source.geometry.coordinates[0], hit._source.geometry.coordinates[1]);
 
-    viewer.entities.add({
-      id: hit._source.properties.LocID,
-      name: hit._source.properties.AccountName,
-      position: Cesium.Cartesian3.fromDegrees(hit._source.geometry.coordinates[0], hit._source.geometry.coordinates[1], 200.0),
-      billboard: {
-        image: pinBuilder.fromColor(Cesium.Color.ROYALBLUE, markerHeight).toDataURL(),
-        verticalOrigin: Cesium.VerticalOrigin.BOTTOM
-      },
-      description: '\
+    Cesium.sampleTerrain(viewer.terrainProvider, 9, [pointOfInterest])
+      .then(function (samples) {
+        viewer.entities.add({
+          id: hit._source.properties.LocID,
+          name: hit._source.properties.AccountName,
+          position: Cesium.Cartesian3.fromDegrees(hit._source.geometry.coordinates[0], hit._source.geometry.coordinates[1], samples[0].height),
+          billboard: {
+            image: pinBuilder.fromText('' + hit._source.properties.LocID, Cesium.Color.ROYALBLUE, markerHeight).toDataURL(),
+            verticalOrigin: Cesium.VerticalOrigin.BOTTOM
+          },
+          description: '\
                         <p>\
                         Location: '+ hit._source.properties.AccountName + ' \
                         </p>\
@@ -91,13 +94,16 @@ export class CesiumComponent implements OnInit {
                         <p>\
                         Risk Score: '+ hit._source.properties.MR_RISK_SCORE + '\
                         </p>'
-    });
+        });
+      });
+
 
 
   }
   ngOnInit() {
     this.pinBuilder = new Cesium.PinBuilder();
     this.cesiumViewer = new Cesium.Viewer(this.cesiumContainer.nativeElement);
+    this.cesiumViewer.scene.globe.enableLighting = true;
   }
 
 

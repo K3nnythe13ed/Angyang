@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import * as elasticsearch from 'elasticsearch';
 import * as $ from 'jquery';
 
@@ -21,7 +20,7 @@ export class AppComponent  implements OnInit {
   }
   
   ngOnInit() {
-    $('h1').text('jquery and elasticsearch libs work!');
+    $('h1').text('Angular2-Cesium-Map');
 
   }
 }
