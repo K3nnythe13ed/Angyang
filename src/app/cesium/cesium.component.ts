@@ -1,9 +1,9 @@
 import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
 import * as elasticsearch from 'elasticsearch';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 /**
  * This is my cesium comment
  */
+
 @Component({
   selector: 'app-cesium',
   templateUrl: './cesium.component.html',

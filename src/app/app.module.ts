@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { CesiumComponent } from './cesium/cesium.component';
+import { AlertModule } from 'ng2-bootstrap';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { CesiumComponent } from './cesium/cesium.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    AlertModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

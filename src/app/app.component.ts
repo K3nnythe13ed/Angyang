@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import * as elasticsearch from 'elasticsearch';
-import * as $ from 'jquery';
 
 
 @Component({
@@ -13,10 +12,7 @@ export class AppComponent  implements OnInit {
   private _client: elasticsearch.Client
 
   constructor() {
-    this._client = new elasticsearch.Client({
-      host: 'localhost:9200',
-      log: 'trace'
-    });
+    
   }
   
   ngOnInit() {
