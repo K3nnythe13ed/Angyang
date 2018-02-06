@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnInit, Renderer, ViewChild } from '@angular/core';
-import * as elasticsearch from 'elasticsearch';
 /**
  * This is my cesium comment
  */
@@ -12,7 +11,6 @@ import * as elasticsearch from 'elasticsearch';
 export class CesiumComponent implements OnInit {
   @ViewChild('cesiumContainer') cesiumContainer: ElementRef;
   cesiumViewer: any;
-  private _client: elasticsearch.Client
   pinBuilder: any;
 
   constructor(public element: ElementRef, private renderer: Renderer) {
@@ -20,9 +18,6 @@ export class CesiumComponent implements OnInit {
     (<any>window).CESIUM_BASE_URL = '/assets/Cesium';
 
 
-    this._client = new elasticsearch.Client({
-      host: 'localhost:9200'
-    });
   }
 
   ngAfterViewInit() {
@@ -35,32 +30,7 @@ export class CesiumComponent implements OnInit {
 
     this.cesiumViewer.terrainProvider = terrainProvider;
     var viewer = this.cesiumViewer;
-    let marker = this.newMarkerOnMap;
     let pinbuilder = this.pinBuilder;
-    this._client.search({
-      index: 'logstash-*',
-      type: 'warehouse',
-      size: 1000,
-      body: {
-        "sort": {
-          "properties.LocID": { "order": "desc" }
-        }
-      }
-
-    }, function (error, response) {
-      if (error) {
-        console.error('elasticsearch cluster is down!');
-      } else {
-
-        response.hits.hits.forEach((hit) => {
-          marker(hit, viewer, pinbuilder);
-        })
-        console.log('All is well');
-
-      }
-    });
-    console.log(this.cesiumViewer.entities)
-    console.log(viewer.entities)
   }
   newMarkerOnMap(hit, viewer, pinBuilder) {
 

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as elasticsearch from 'elasticsearch';
 
 
 @Component({
@@ -9,7 +8,6 @@ import * as elasticsearch from 'elasticsearch';
 })
 export class AppComponent  implements OnInit {
   title = 'app works!';
-  private _client: elasticsearch.Client
 
   constructor() {
     
